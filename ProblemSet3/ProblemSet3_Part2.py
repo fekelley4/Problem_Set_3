@@ -88,9 +88,6 @@ fileObj.close() #Close the file
 #Save the contents of the first line in the list of lines to the variable "headerLineString"
 headerLineString = lineList[0]
 
-#Print the contents of the headerLine
-print(headerLineString)
-
 #%% Task 5 -- Loop through each data line & Create Variables
 # Loop through each data line (i.e. skip the header line) 
 # Split the line string into a list of data items.
@@ -99,7 +96,7 @@ print(headerLineString)
 headerItems = headerLineString.split(',')
 
 #List the index of the mmsi, start/end latitude, and start/end longitude values
-mmsi_idx = headerItems.index('transshipment_mmsi')
+transshipment_mmsi_idx = headerItems.index('transshipment_mmsi')
 start_lat_idx = headerItems.index('starting_latitude')
 end_lat_idx = headerItems.index('ending_latitude')
 start_long_idx = headerItems.index('starting_longitude')
@@ -107,9 +104,12 @@ end_long_idx = headerItems.index('ending_longitude')
 
 #%% Task 5
 # Store the transshipment_mmsi, starting & ending latitude, and starting & ending longitude values into their own respective variables
+# Examines the starting and ending latitude (the 2nd and 4th columns in the csv) to determine whether the event crosses the equator, passing from the southern hemisphere to the north.
+# Examines the starting longitude to see whether it falls between 145°E and 155°E. Again, it’s useful to create a Boolean variable that store whether this is true or false.
+# If both the latitude and longitude constraints are true, then use the value of the transmission_mmsi for the current line to query the vesselsDict created above to print the vessel’s mmsi and its fleet.
 
-#Create an empty dictionary
-vesselDict = {}
+# Create a variable to determine if vessels meet criteria
+vessels_met_criteria = False
 
 #Iterate through all lines (except the header) in the data file:
 for lineString in lineList[1:]:
@@ -121,33 +121,29 @@ for lineString in lineList[1:]:
     lineData = lineString.split(',')
     
     #Extract the values from the list 
-    mmsi = lineData[mmsi_idx]
+    mmsi = lineData[transshipment_mmsi_idx]
     start_lat = float(lineData[start_lat_idx])
     end_lat = float(lineData[end_lat_idx])
     start_long = float(lineData[start_long_idx])
     end_long = float(lineData[end_long_idx])
 
-    #Adds info to the vesselDict dictionary
-    vesselDict[mmsi] = start_lat, end_lat, start_long, end_long
+    # Variable defining event crossing an equator 
+    crossing_equator = start_lat < 0 and end_lat > 0
+    # Variable defining longitude range
+    long_range = 145 <= start_long <= 155
+
+    # Checking if the two condtions are met
+    if crossing_equator and long_range:
+        # get() retrieves fleet value corresponding to mmsi value
+        fleet = vesselDict.get(mmsi, 'Unknown')
+        print(f"Vessel #{mmsi} {start_long} flies the flag of {fleet}.")
+        # set criteria variable to true, indicating the specified conditions have been met
+        vessels_met_criteria = True
 
 
-# %% Task 5 -- Examines latitude//longitude values 
-# Examines the starting and ending latitude (the 2nd and 4th columns in the csv) to determine whether the event crosses the equator, passing from the southern hemisphere to the north.
-# Examines the starting longitude to see whether it falls between 145°E and 155°E. Again, it’s useful to create a Boolean variable that store whether this is true or false.
-# If both the latitude and longitude constraints are true, then use the value of the transmission_mmsi for the current line to query the vesselsDict created above to print the vessel’s mmsi and its fleet.
-
-# Create boolean variable 
-# vessel_criteria = False
-
-# Variable defining event crossing an equator 
-crossing_equator = start_lat < 0 and end_lat > 0
-# Variable defining longitude range
-long_range = 145 <= start_long <= 155
-
-
-
-
-
-# %% Task 5 --Bonus 
 # BONUS: If no vessels meet your criteria, print a message that states “No vessels met criteria”
+if not vessels_met_criteria:
+    print("No vessels met criteria")
 
+
+# %%
