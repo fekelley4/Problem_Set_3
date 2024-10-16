@@ -121,7 +121,7 @@ for lineString in lineList[1:]:
     lineData = lineString.split(',')
     
     #Extract the values from the list 
-    mmsi = lineData[transshipment_mmsi_idx]
+    transshipment_mmsi = lineData[transshipment_mmsi_idx]
     start_lat = float(lineData[start_lat_idx])
     end_lat = float(lineData[end_lat_idx])
     start_long = float(lineData[start_long_idx])
@@ -135,8 +135,8 @@ for lineString in lineList[1:]:
     # Checking if the two condtions are met
     if crossing_equator and long_range:
         # get() retrieves fleet value corresponding to mmsi value
-        fleet = vesselDict.get(mmsi, 'Unknown')
-        print(f"Vessel #{mmsi} {start_long} flies the flag of {fleet}.")
+        fleet = vesselDict.get(transshipment_mmsi, 'Unknown')
+        print(f"Vessel #{transshipment_mmsi} {start_long} flies the flag of {fleet}.")
         # set criteria variable to true, indicating the specified conditions have been met
         vessels_met_criteria = True
 

@@ -1,5 +1,4 @@
 #%% Task 1 - Edit code to print as requested
-# PS3: Code Block 1--
 
 # Assign variables
 mountain = "Denali"
@@ -12,7 +11,6 @@ print('\"' + nickname + '\",')
 print("is " + str(elevation) + "\' above sea level.")
 
 #%% Task 2 - Lists and Iteration
-# PS3: Code Block 2--
 
 # Create a variable pointing to the data file
 data_folder = 'W:/859_data/triangle'
@@ -37,7 +35,6 @@ for x in data_list:
     print(data_folder + "/" + x)
 
 #%% Task 3 - Lists and Iteration
-# PS3: Code Block 3--
 
 # Create empty list variable 
 user_numbers = []
@@ -57,7 +54,6 @@ user_numbers.sort()
 print("Highest Input Value: ", user_numbers [-1])
 
 #%% Task 3 - Challenge 
-# PS3: Code Block 4--
 
 # Create empty list variable 
 user_numbers = []
@@ -75,3 +71,5 @@ for x in range(3):
 user_numbers.sort(reverse=True)
 # Print sorted values 
 print("Sorted values: ", user_numbers)
+
+# %%
