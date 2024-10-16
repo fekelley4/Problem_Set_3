@@ -19,16 +19,12 @@ print(data_folder)
 
 # Create a list object
 data_list = ['streams.shp', 'stream_types.cvs', 'naip_imagery.tif']
-# Print list
-print(data_list)
 
 # Assign variable equal to string
 user_item = 'roads.shp'
 
 # Add user_item to list object
 data_list.append(user_item)
-# Print list 
-print(data_list)
 
 # Loop through list and print full data path
 for x in data_list:
